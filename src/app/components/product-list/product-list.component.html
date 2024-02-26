@@ -1,0 +1,47 @@
+<a routerLink="/cart" routerLinkActive="router-link-active"><i class="fa-solid fa-cart-shopping fa-5x mt-4"></i></a>
+<div class="row">
+    @for(product of filteredProducts; track product.ID)
+    {
+        <div class="col-sm-3">
+            <div class="card m-4" style="width: auto;" shadow>      
+                <img src={{product.Img}} class="card-img-top" alt="..." style="height: 400px; width: auto; border-radius: 5px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.Name}}</h5>
+                    <p class="card-text">Price : {{product.Price}}</p>
+                    <p class="card-text" [style.backgroundColor]="product.Quantity==1?'gold':'azure'" [style.color]="product.Quantity==1?'black':'black'">
+                    @switch(product.Quantity){
+                        @case(0){
+                            Out of stock
+                        }
+                        @case(1){
+                            Last one item
+                        }
+                        @case(2){
+                            Last two items
+                        }
+                        @default{
+                            In stock : {{product.Quantity}}
+                        }
+                    }
+                    </p>
+                    <p class="card-text">category : {{product.categoryID}}</p>
+                    @if(product.isPurchased){
+                        <p class="card-text">Purchasing Date : {{date | date:"medium"}}</p>
+                        <p class="card-text">Credit Card : {{creCard |cut}}</p>
+                    }
+                    <div class="row justify-content-between">
+                        <div class="col-md-6">
+                            <button class="btn btn-warning" [disabled]="product.Quantity==0" [routerLink]="['/products',product.ID]" routerLinkActive="router-link-active" (click)="Date(product)" (click)="purchase(product)" (click)="addToCart(product)">Add to cart  <i class="fa-solid fa-cart-shopping"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if(!showImg){
+        <button class="btn  btn-danger mb-4 mt-4" style="width: 100%; font-size: 30px;" (click)="toggleImg()">retrieve images</button>
+    }
+    @if(showImg){
+        <button class="btn btn-danger mb-4 mt-4" style="width: 100%; font-size: 30px;" (click)="toggleImg()">Delete images</button>
+    }
+</div>
